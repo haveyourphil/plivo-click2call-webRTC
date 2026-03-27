@@ -9,11 +9,11 @@ const app = express();
 app.use(formidable());
 app.use(express.static(__dirname + '/../client/'));
 
-app.post('/makeCall/', function(req, res) {
+app.post('/makeCall/', function (req, res) {
 
     jsonObject = JSON.stringify({
-        "phoneMeNumber": req.fields.src,
-        "destinationNumber": req.fields.dst,
+        "srcNumber": req.fields.src,
+        "destNumber": req.fields.dst,
     });
 
     // prepare the header
@@ -32,9 +32,9 @@ app.post('/makeCall/', function(req, res) {
     };
 
     // do the POST request
-    let reqPost = https.request(postOptions, function(response) {
+    let reqPost = https.request(postOptions, function (response) {
         console.log("statusCode: ", response.statusCode);
-        response.on('data', function(d) {
+        response.on('data', function (d) {
             console.info('POST result:\n');
             process.stdout.write(d);
             console.info('\n\nPOST completed');
@@ -46,11 +46,11 @@ app.post('/makeCall/', function(req, res) {
     console.log(jsonObject);
     reqPost.write(jsonObject);
     reqPost.end();
-    reqPost.on('error', function(e) { // log any errors
+    reqPost.on('error', function (e) { // log any errors
         console.error(e);
     });
 })
 
-app.listen(PORT, function() {
+app.listen(PORT, function () {
     console.log("listening on port", process.env.PORT);
 });
